@@ -6,7 +6,7 @@
 
 ## Architecture
 
-```
+```tree
 AI Camera (YOLO)  ──┐
 AI Microphone      ──┼──► FastAPI Backend ──► Firestore DB
 Manual Trigger     ──┘         │
@@ -48,6 +48,7 @@ docker-compose up --build
 ```
 
 To enable real FCM push notifications:
+
 ```bash
 PANIC_FCM_SERVER_KEY=your-key-here docker-compose up
 ```
@@ -64,9 +65,11 @@ PANIC_FCM_SERVER_KEY=your-key-here docker-compose up
 ### 🚨 Crisis Detection
 
 #### `POST /api/crisis/detect`
+
 General crisis detection endpoint. Triggers rule engine + triage automatically.
 
 **Request:**
+
 ```json
 {
   "source": "Camera-01",
@@ -77,6 +80,7 @@ General crisis detection endpoint. Triggers rule engine + triage automatically.
 ```
 
 **Response:**
+
 ```json
 {
   "message": "Crisis detected by General System and logged successfully",
@@ -97,9 +101,11 @@ General crisis detection endpoint. Triggers rule engine + triage automatically.
 ```
 
 #### `POST /api/yolo/detect`
+
 Same as above but tagged as "Camera AI" source. For Person 1's YOLO model.
 
 #### `POST /api/audio/detect`
+
 Same as above but tagged as "Audio AI" source. For Person 1's YAMNet model.
 
 ---
@@ -107,9 +113,11 @@ Same as above but tagged as "Audio AI" source. For Person 1's YAMNet model.
 ### 🏥 Triage
 
 #### `POST /api/triage`
+
 Manually run hospital triage for any crisis. Returns scored hospital list + ambulance dispatch.
 
 **Request:**
+
 ```json
 {
   "source": "manual",
@@ -120,6 +128,7 @@ Manually run hospital triage for any crisis. Returns scored hospital list + ambu
 ```
 
 **Response:**
+
 ```json
 {
   "best_hospital": {
@@ -146,10 +155,12 @@ Manually run hospital triage for any crisis. Returns scored hospital list + ambu
 ### 🗺️ Pathfinding (A*)
 
 #### `POST /api/route`
+
 Compute optimal evacuation route through the building, avoiding hazard zones.
 Returns `coordinates` as `[x, y, z]` arrays ready to render in Three.js.
 
 **Request:**
+
 ```json
 {
   "start_room": "408",
@@ -160,6 +171,7 @@ Returns `coordinates` as `[x, y, z]` arrays ready to render in Three.js.
 ```
 
 **Response:**
+
 ```json
 {
   "found": true,
@@ -181,6 +193,7 @@ Returns `coordinates` as `[x, y, z]` arrays ready to render in Three.js.
 > Note: `FIRE` and `VIOLENCE` automatically disable lift usage.
 
 **Valid room IDs:**
+
 - Ground floor: `Lobby`, `Restaurant`, `Kitchen`, `Security`, `Utility`
 - Guest rooms: `101`–`408` (floor + 01–08)
 - Corridors: `Corridor_1` – `Corridor_4`
@@ -193,9 +206,11 @@ Returns `coordinates` as `[x, y, z]` arrays ready to render in Three.js.
 ### 👥 Staff Management
 
 #### `POST /api/staff`
+
 Add a staff member to Firestore.
 
 **Request:**
+
 ```json
 {
   "name": "Arjun Sharma",
@@ -215,9 +230,11 @@ Add a staff member to Firestore.
 **Status:** `Available` | `Busy` | `Off Duty`
 
 #### `GET /api/staff`
+
 List all staff with their current status.
 
 #### `POST /api/staff/reset`
+
 Reset all staff to `Available`. Useful for testing or shift changeovers.
 
 ---
@@ -225,6 +242,7 @@ Reset all staff to `Available`. Useful for testing or shift changeovers.
 ### 📊 Active Crises
 
 #### `GET /api/crisis/active`
+
 Returns all currently active crises from Redis cache.
 
 ---
@@ -232,9 +250,11 @@ Returns all currently active crises from Redis cache.
 ### 🎮 Simulator
 
 #### `POST /api/simulator/trigger`
+
 Trigger a simulated event (for Person 2's control panel). Broadcasts via WebSocket.
 
 **Request:**
+
 ```json
 {
   "event_type": "fire",
@@ -249,11 +269,13 @@ Trigger a simulated event (for Person 2's control panel). Broadcasts via WebSock
 ### 📡 WebSocket
 
 #### `WS /ws/dashboard`
+
 Real-time event stream for the dashboard.
 
 **Connect:** `ws://127.0.0.1:8000/ws/dashboard`
 
 **Events received:**
+
 ```json
 { "event": "NEW_CRISIS",          "data": { ...crisis object... } }
 { "event": "SIMULATOR_TRIGGERED", "data": { ...event object... } }
@@ -264,6 +286,7 @@ Real-time event stream for the dashboard.
 ## Environment Variables
 
 | Variable | Required | Description |
+
 |---|---|---|
 | `PANIC_FCM_SERVER_KEY` | No | FCM server key from Firebase Console. Without this, push notifications run in mock/log mode. |
 
@@ -272,7 +295,9 @@ Real-time event stream for the dashboard.
 ## Dependencies (Person Assignments)
 
 | # | Dependency | From | Status |
+
 |---|---|---|---|
+
 | 1 | Detection data format | Person 1 (YOLO/Audio AI) | ✅ Integrated — use `/api/yolo/detect` or `/api/audio/detect` |
 | 2 | FCM Server Key | Person 4 | ⚠️ Set `PANIC_FCM_SERVER_KEY` env var when received |
 | 3 | WebSocket client | Person 2 | ✅ Connect to `ws://127.0.0.1:8000/ws/dashboard` |
@@ -281,7 +306,7 @@ Real-time event stream for the dashboard.
 
 ## File Structure
 
-```
+```cmd
 backend/
 ├── main.py           ← FastAPI app, all endpoints, WebSocket manager
 ├── rule_engine.py    ← Auto staff assignment, FCM push, threat matrix
@@ -292,3 +317,17 @@ backend/
 ├── requirements.txt  ← Python dependencies
 └── Dockerfile        ← Container definition
 ```
+
+## Contributors
+
+| Member | Role | Key Contributions | GitHub |
+
+| :--- | :--- | :--- | :--- |
+
+| **Hariram S** | **Frontend & Dashboard Lead** | Developed the 3D Digital Twin using React Three Fiber, implemented cinematic camera "fly-to" logic, and managed frontend-backend integration. | [GitHub](https://github.com/UdontKnowMe-git) |
+
+| **M Arjun** | **AI & Systems Architect** | [cite_start]Designed the initial project framework and developed the YOLO-based visual detection and audio analysis models for crisis identification[cite: 308]. | [GitHub](https://github.com/M-Arjun-07) |
+
+| **CV Vignesh** | **Mobile Lead** | [cite_start]Developed the Flutter-based mobile application, including haptic feedback systems and the emergency responder interface[cite: 245, 308]. | [GitHub](https://github.com/CV-Vignesh) |
+
+| **Krish** | **Backend & API Lead** | [cite_start]Engineered the FastAPI backend, integrated Firebase/Firestore, and established the WebSocket infrastructure for real-time data broadcasting[cite: 194, 298, 308]. | [GitHub](https://github.com/syntaxerror0106) |
