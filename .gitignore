@@ -57,7 +57,6 @@ firebase-credentials.json
 backend/firebase-credentials.json
 
 # AI Models (Do not upload heavy binaries)
-*.pt
 *.tflite
 
 # Sample Data & Media (Test videos and audio)
