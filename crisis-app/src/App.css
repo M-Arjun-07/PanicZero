@@ -1,0 +1,210 @@
+body, html, #root { 
+  margin: 0; 
+  padding: 0; 
+  width: 100%; 
+  height: 100%; 
+  overflow: hidden; 
+  background: #000000 !important; 
+  font-family: 'Courier New', Courier, monospace;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.97; }
+  5% { opacity: 0.92; }
+  10% { opacity: 0.99; }
+  15% { opacity: 0.94; }
+  20% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+.terminal-sidebar-wrapper {
+  position: relative;
+  height: 100%;
+  z-index: 10;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.left-sidebar { width: 280px; border-right: 1px solid #002B4D; }
+.right-sidebar { width: 280px; border-left: 1px solid #002B4D; }
+
+.left-sidebar.collapsed { transform: translateX(-100%); }
+.right-sidebar.collapsed { transform: translateX(100%); }
+
+.terminal-sidebar-content {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(15px);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* CRT Scanline Overlay */
+.terminal-sidebar-content::after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+.scanline-beam {
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(0deg, transparent, rgba(56, 189, 248, 0.05), transparent);
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.sidebar-toggle {
+  background: transparent;
+  border: 1px solid #002B4D;
+  color: #38BDF8;
+  cursor: pointer;
+  font-family: monospace;
+  padding: 4px 8px;
+  margin-bottom: 15px;
+  width: fit-content;
+  align-self: flex-end;
+}
+
+.sidebar-handle {
+  position: absolute;
+  top: 20px;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #002B4D;
+  color: #38BDF8;
+  cursor: pointer;
+  padding: 10px 5px;
+}
+.left-handle { left: 0; border-left: none; border-radius: 0 4px 4px 0; }
+.right-handle { right: 0; border-right: none; border-radius: 4px 0 0 4px; }
+
+.secure-node-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 8px;
+  margin-bottom: 25px;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.dot-red {
+  color: #ef4444;
+  animation: flicker 1s infinite;
+}
+
+.node-text {
+  color: #38BDF8;
+}
+
+.terminal-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #1e293b;
+  color: #cbd5e1;
+  padding: 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  font-family: monospace;
+  text-align: left;
+  transition: all 0.2s ease;
+  font-size: 12px;
+}
+
+.terminal-btn:hover {
+  border-color: #38BDF8;
+  color: #38BDF8;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+  text-shadow: 0 0 5px rgba(56, 189, 248, 0.8);
+}
+
+.terminal-btn:active {
+  animation: glitch 0.1s linear;
+  background: rgba(56, 189, 248, 0.1);
+}
+
+.terminal-hud-container {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  right: 280px;
+  pointer-events: none;
+  z-index: 1000;
+  font-family: monospace;
+}
+
+.terminal-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 12px 24px;
+  border-radius: 4px;
+  border: 1px solid #002B4D;
+  backdrop-filter: blur(10px);
+}
+
+.terminal-brand {
+  font-weight: bold;
+  letter-spacing: 2px;
+  font-size: 18px;
+  color: #cbd5e1;
+}
+
+.terminal-stats {
+  font-size: 12px;
+  font-weight: bold;
+  color: #64748b;
+}
+
+.terminal-button:hover {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+  border-color: #10B981 !important;
+  color: #10B981 !important;
+}
+
+.typing-text {
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  animation: typing 1s steps(40, end);
+}
+
+.flicker-ui {
+  animation: flicker 2s infinite;
+}

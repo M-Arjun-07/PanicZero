@@ -1,0 +1,67 @@
+# dependencies
+node_modules/
+
+# Firebase service account credentials
+firebase-credentials.json
+backend/firebase-credentials.json
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+
+# env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# editor files
+.vscode/
+.idea/
+
+# coverage
+coverage/
+
+# vite
+*.local
+
+# ------------------------------------
+# PYTHON & AI ADDITIONS FOR CRISISMESH
+# ------------------------------------
+
+# Python Cache & Envs
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+
+# Firebase credentials (CRITICAL DO NOT REMOVE)
+firebase-credentials.json
+backend/firebase-credentials.json
+
+# AI Models (Do not upload heavy binaries)
+*.pt
+*.tflite
+
+# Sample Data & Media (Test videos and audio)
+sample_data/
+*.mp4
+*.wav
+*.avi

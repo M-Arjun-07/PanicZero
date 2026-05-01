@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "975350765023",
+    "project_id": "solutionschllge",
+    "storage_bucket": "solutionschllge.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975350765023:android:ecedf86c828c0c0350a06a",
+        "android_client_info": {
+          "package_name": "com.example.crisis_mesh_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpz_WIC1nnTTmrf-o9O1SwRrFuBss8yZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

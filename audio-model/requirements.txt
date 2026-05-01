@@ -1,0 +1,6 @@
+tensorflow>=2.10.0
+sounddevice>=0.4.6
+numpy>=1.23.0
+scipy>=1.9.0
+requests>=2.28.0
+whisper-jax>=0.1.0

@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  # ── PanicZero FastAPI Backend ─────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: paniczero-backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Optional: Set your FCM server key to enable real push notifications.
+      # Without this, the engine runs in mock mode and logs to console.
+      - PANIC_FCM_SERVER_KEY=${PANIC_FCM_SERVER_KEY:-}
+    volumes:
+      # Mount firebase credentials at runtime (never bake secrets into images)
+      - ./backend/firebase-credentials.json:/app/firebase-credentials.json:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── PanicZero React Frontend ──────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./crisis-app
+      dockerfile: Dockerfile
+    container_name: paniczero-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: unless-stopped
